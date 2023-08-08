@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+<div class="nav">
+    <input type="text" id="booksearch-input" placeholder="검색할 키워드를 입력하세요">
+    <button id="booksearch-input-btn">검색</button>
+</div>
+<div class="main">
+
+    <div class="left-main">
+        <h2>자료검색</h2>
+        <img src="" alt="">
+    </div>
+
+    <div class="midle-main">
+        <div>
+            <h1>검색결과</h1>
+        </div>
+        <div>
+            <p>검색어 '<b id="search-keyword"></b>'에 대학 총 <b id="search-count"></b>건이 검색되었습니다</p>
+        </div>
+    </div>
+
+
+    <div class="book-result">
+
+
+    </div>
+
+</div>
+
+</body>
+</html>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>
+    //HTML 로드 되면 실행
+    $(document).ready(function(){
+
+    //출력 될 공간 변수로 지정
+    const bookResult = $('.book-result')
+
+    //버튼을 누르면 실행되는 이벤트
+    $('#booksearch-input-btn').click(function(){
+
+    //출력된 결과값 리셋
+    bookResult.empty();
+
+    //input태그에 있는 값을 가져와 변수로 만들어준다
+    const qurey = $('#booksearch-input').val();
+
+    $.ajax({
+		url:'/bookapi',
+		data: { qurey : qurey },
+		type:'GET',
+		dataType: 'json',
+		success: function(data){
+
+		  for (let i = 0; i < data.length; i++) {
+              let image = data[i]["image"];
+    		  let title = data[i]["title"];
+	    	  let publisher = data[i]["publisher"];
+		      let price = data[i]["price"];
+              let author = data[i]["author"];
+              let description = data[i]["description"];
+
+          let row =
+            '<div class="card mb-3" style="max-width: 960px;">' +
+            '<div class="row g-0">' +
+            '<div class="col-md-4">' +
+            '<img class="img-fluid rounded-start" src=' + image + ' + alt="...">' +
+            '</div>' +
+            '<div class="col-md-8">' +
+            '<div class="card-body">' +
+            '<h5 class="card-title ">' + title + '</h5>' +
+            '<p class="card-text ">'+ description +'</p>' +
+            '<p class="card-text"><b class="text-body-secondary">'+ author +'</b></p>' +
+            '<p class="card-text"><b class="text-body-secondary">'+ publisher +'</b></p>' +
+            '<p class="card-text"><b class="text-body-secondary">'+ discount +'</b></p>' +
+            '<p class="card-text"><b class="text-body-secondary">'+ author +'</b></p>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+
+            bookResult.append(row);
+        };
+
+		},
+		error: function(jqXHR){
+		    console.log(data)
+			console.log("실패입니다!");
+		}// 요청 실패
+	});
+    });
+});
+
+</script>

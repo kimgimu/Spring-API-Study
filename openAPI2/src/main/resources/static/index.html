@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+ 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+</head>
+<body>
+    스프링부트 입니다.
+</body>
+</html>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+<script>
+
+$(document).ready(function(){
+	
+	// ajax()
+	$.ajax({
+		// url : http://localhost:포트번호/jsonapi
+		url:'http://localhost:9020/jsonapi',
+		type:'GET',
+		dataType:'text', //리턴해주는 타입을 지정해 준다. 		
+		
+		success: function(data){
+			console.log("호출성공");
+			console.log(JSON.parse(data));
+		},// 요청 완료시!
+		error: function(jqXHR){
+			console.log("실패입니다!");
+		}// 요청 실패	
+	});	
+});
+</script>
+
+
+
+
+
+
+
+
+
+ 
